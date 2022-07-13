@@ -43,9 +43,13 @@ def main_menu():
         
         background.move_background(LEFT, 2)
         
-        if (keyboard.Key.right in pressed_keys or keyboard.Key.left in pressed_keys) and delay_change_button <= 0:
-            play_button.toggle_button()
-            exit_button.toggle_button()
+        if delay_change_button <= 0:
+            if play_button.select == False and keyboard.Key.left in pressed_keys:
+                play_button.set_button(True)
+                exit_button.set_button(False)
+            elif exit_button.select == False and keyboard.Key.right in pressed_keys:
+                exit_button.set_button(True)
+                play_button.set_button(False)
             delay_change_button = 5
         else:
             delay_change_button -= 1
