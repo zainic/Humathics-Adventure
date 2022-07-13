@@ -27,6 +27,8 @@ class Background:
         self.x = 0
         self.y = 0
         
+        self.__name__ = "Background"
+        
     def move_background(self, direction, step):
         """
         Move the background, so added the dynamic background
@@ -62,6 +64,8 @@ class Layer:
             solid (bool, optional): . Defaults to False.
         """
         self.texture = cv2.imread(texture_path)
+        
+        self.__name__ = "Layer"
 
 class LevelLayer(Layer):
     def __init__(self, texture_path, solid = False):
@@ -74,6 +78,8 @@ class LevelLayer(Layer):
         """
         super().__init__(texture_path)
         self.solid = solid
+        
+        self.__name__ = "LevelLayer"
 
 class Object:
     """
@@ -87,3 +93,44 @@ class Object:
             layer_path (str): path of the layer image with black background
         """
         self.texture = cv2.imread(texture_path)
+        
+        self.__name__ = "Object"
+        
+class Button:
+    """
+    Create button class
+    """
+    def __init__(self, texture_selected_path, texture_unselected_path):
+        """
+        Initial load the button
+
+        Args:
+            texture_unselected_path (str): path of the unselected button texture with black background
+            texture_selected_path (str): path of the selected button texture with black background
+        """
+        self.unselected = cv2.imread(texture_unselected_path)
+        self.selected = cv2.imread(texture_selected_path)
+        
+        self.select = False
+        
+        self.__name__ = "Button"
+    
+        
+    def toggle_button(self):
+        """
+        Turn on or off selected button
+        """
+        if self.select == True:
+            self.select = False
+        else:
+            self.select = True
+            
+    def set_button(self, set):
+        """
+        Set the button status
+
+        Args:
+            set (boolean): Set the button status
+        """
+        self.select = set
+        
