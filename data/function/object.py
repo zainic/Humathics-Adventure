@@ -2,6 +2,15 @@ import numpy as np
 import cv2
 import os, sys
 
+DEFAULT_WINDOW_WIDTH = 1280
+DEFAULT_WINDOW_HEIGHT = 720
+
+UP = np.array([-1, 0])
+DOWN = np.array([1, 0])
+LEFT = np.array([0, -1])
+RIGHT = np.array([0, 1])
+NO_MOVE = np.array([0, 0])
+
 class Background:
     """
     Create class of background
@@ -13,7 +22,32 @@ class Background:
         Args:
             texture_path (str): path of the background image texture
         """
-        self.texture = cv2.imread(texture_path)
+        self.full_background = cv2.imread(texture_path)
+        self.background = self.full_background[:DEFAULT_WINDOW_HEIGHT, :DEFAULT_WINDOW_WIDTH]
+        self.x = 0
+        self.y = 0
+        
+    def move_background(self, direction, step):
+        """
+        Move the background, so added the dynamic background
+
+        Args:
+            direction (array): direction of the movement
+            step (int): speed of movement in pixel
+        """
+        Y,X = direction
+        
+        self.y = (self.y - Y * step) % self.full_background.shape[0]
+        if (self.y % self.full_background.shape[0]) + DEFAULT_WINDOW_HEIGHT >= self.full_background.shape[0]:
+            self.background = np.vstack([self.full_background[self.y :, :], self.full_background[:DEFAULT_WINDOW_HEIGHT - (self.full_background.shape[0] - self.y), :]])
+        else:
+            self.background = self.full_background[self.y : self.y + DEFAULT_WINDOW_HEIGHT, :]
+            
+        self.x = (self.x - X * step) % self.full_background.shape[1]
+        if (self.x % self.full_background.shape[1]) + DEFAULT_WINDOW_WIDTH >= self.full_background.shape[1]:
+            self.background = np.hstack([self.full_background[:, self.x:], self.full_background[:, :DEFAULT_WINDOW_WIDTH - (self.full_background.shape[1] - self.x)]])
+        else:
+            self.background = self.full_background[:, self.x : self.x + DEFAULT_WINDOW_WIDTH]
 
 class Layer:
     """
