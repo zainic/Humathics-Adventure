@@ -19,8 +19,6 @@ def main():
     while True:
         if status == 'main_menu':
             status = main_menu()
-        elif status == 'level_selection':
-            pass
         elif status == 'exit':
             break
         
