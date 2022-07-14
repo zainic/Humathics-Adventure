@@ -110,8 +110,10 @@ def create_level_frame(background ,layers = []):
     for layer in layers:
         if layer.__name__ == "LevelLayer":
             layer_counter += 1
-            gray = np.expand_dims(cv2.cvtColor(np.copy(frame), cv2.COLOR_BGR2GRAY), 2)
-            frame = np.concatenate([gray, gray, gray], axis=2)
+            gray = cv2.cvtColor(np.copy(layer.texture), cv2.COLOR_BGR2GRAY)
+            triple_gray = cv2.merge([gray, gray, gray],3)
+            frame = cv2.addWeighted(frame, 1, triple_gray, -255, 0)
+            frame = cv2.addWeighted(frame, 1, layer.texture, 1, 0)
                     
     return frame
 
