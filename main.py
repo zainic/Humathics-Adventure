@@ -11,7 +11,10 @@ from data.function.main_menu import *
 
 def main():
     mixer.init()
-    mixer.music.load(os.path.join("data","music","main_menu.mp3"))
+    
+    main_menu_music_list = ["main_menu_1.mp3", "main_menu_2.mp3"]
+    
+    mixer.music.load(os.path.join("data","music",main_menu_music_list[np.random.randint(0,len(main_menu_music_list))]))
     mixer.music.play(-1)
     
     listener = keyboard.Listener(on_press=on_pressed, on_release=on_released)
