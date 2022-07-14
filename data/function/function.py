@@ -48,7 +48,22 @@ def create_main_menu_frame(background ,layers = []):
             
     
     return frame
+
+def get_enter_status(pressed_keys):
+    """
+    function that return enter status from key pressed
+
+    Args:
+        pressed_keys (set): key that got pressed
+
+    Returns:
+        bool: exit status
+    """
+    if keyboard.Key.enter in pressed_keys:
+        return True
     
+    return False
+
 def get_exit_status(pressed_keys):
     """
     function that return exit status from key pressed
