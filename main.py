@@ -8,6 +8,7 @@ from data.function.main_menu import *
 
 def main():
     main_menu()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()
