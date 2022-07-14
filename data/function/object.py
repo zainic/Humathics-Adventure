@@ -68,7 +68,7 @@ class Layer:
         self.__name__ = "Layer"
 
 class LevelLayer(Layer):
-    def __init__(self, texture_path, solid = False):
+    def __init__(self, texture_path, solid = False, hurt = False):
         """
         Initial to load level layer
 
@@ -78,6 +78,7 @@ class LevelLayer(Layer):
         """
         super().__init__(texture_path)
         self.solid = solid
+        self.hurt = hurt
         
         self.__name__ = "LevelLayer"
 
