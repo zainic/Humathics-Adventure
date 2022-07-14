@@ -93,6 +93,28 @@ def create_level_selection_frame(background ,layers = []):
                     
     return frame
 
+def create_level_frame(background ,layers = []):
+    """
+    Create frame from some condition in level selection page
+
+    Args:
+        background (class, optional): background. Defaults to Background().
+        layers (list, optional): layers that overlay the background. Defaults to [].
+    """
+    
+    frame = np.copy(background.background)
+    button_counter = 0
+    layer_counter = 0
+    
+    # Show layers
+    for layer in layers:
+        if layer.__name__ == "LevelLayer":
+            layer_counter += 1
+            gray = np.expand_dims(cv2.cvtColor(np.copy(frame), cv2.COLOR_BGR2GRAY), 2)
+            frame = np.concatenate([gray, gray, gray], axis=2)
+                    
+    return frame
+
 def show_fps(frame, st, ed):
     """
     Show the frame rate (debugging mode)
