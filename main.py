@@ -14,9 +14,12 @@ def main():
     mixer.music.load(os.path.join("data","music","main_menu.mp3"))
     mixer.music.play(-1)
     
+    status = 'main_menu'
+    
     while True:
-        status = main_menu()
-        if status == 'level_selection':
+        if status == 'main_menu':
+            status = main_menu()
+        elif status == 'level_selection':
             pass
         elif status == 'exit':
             break
