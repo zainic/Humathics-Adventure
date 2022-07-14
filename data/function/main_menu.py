@@ -27,9 +27,8 @@ def main_menu():
     
     switch_button = mixer.Sound(os.path.join("data","sound","switch_button.wav"))
     select_button = mixer.Sound(os.path.join("data","sound","select_button.wav"))
+    delay_enter = 5
     
-    listener = keyboard.Listener(on_press=on_pressed, on_release=on_released)
-    listener.start()
     st = time.time()
     
     while True:
@@ -55,18 +54,20 @@ def main_menu():
             play_button.set_button(False)
             mixer.Sound.play(switch_button)
         
-        if get_enter_status(pressed_keys):
+        if get_enter_status(pressed_keys) and delay_enter <= 0:
             mixer.Sound.play(select_button)
             if play_button.select == True:
                 stat = 'level_selection'
-                break
             elif exit_button.select == True:
-                ed = time.time()
                 stat = 'exit'
+            break
+        else:
+            delay_enter -= 1
     
     current_pos = np.array([1,1])
     levels_button[(current_pos[0], current_pos[1])].toggle_button()
     delay_move = 5
+    delay_enter = 5
     time.sleep(0.5)
     
     while stat == 'level_selection':
@@ -105,15 +106,16 @@ def main_menu():
         else:
             delay_move -= 1
         
-        if get_enter_status(pressed_keys):
+        if get_enter_status(pressed_keys) and delay_enter <= 0:
             mixer.Sound.play(select_button)
             if back_button.select:
                 stat = 'main_menu'
             else:
                 stat = 'exit'
             break
+        else:
+            delay_enter -= 1
         
     ed = time.time()
-    listener.stop()
     return stat
     
