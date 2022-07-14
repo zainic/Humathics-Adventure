@@ -2,12 +2,20 @@ import numpy as np
 import cv2
 import os, sys
 
+from pygame import mixer
+from pynput import keyboard
+
 from data.function.object import *
 from data.function.function import *
 from data.function.main_menu import *
 
 def main():
-    main_menu()
+    mixer.init()
+    mixer.music.load(os.path.join("data","music","main_menu.mp3"))
+    mixer.music.play(-1)
+    while True:
+        main_menu()
+        break
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":

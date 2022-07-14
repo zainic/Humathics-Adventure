@@ -19,10 +19,6 @@ def main_menu():
     
     play_button.toggle_button()
     
-    mixer.init()
-    mixer.music.load(os.path.join("data","music","main_menu.mp3"))
-    mixer.music.play(-1)
-    
     switch_button = mixer.Sound(os.path.join("data","sound","switch_button.wav"))
     select_button = mixer.Sound(os.path.join("data","sound","select_button.wav"))
     
