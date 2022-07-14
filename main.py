@@ -8,6 +8,7 @@ from pynput import keyboard
 from data.function.object import *
 from data.function.function import *
 from data.function.main_menu import *
+from data.function.level import *
 
 def main():
     mixer.init()
@@ -25,6 +26,9 @@ def main():
     while True:
         if status == 'main_menu':
             status = main_menu()
+        elif status[:5] == "level":
+            if int(status[-1]) == 1:
+                status = level_stage_1()
         elif status == 'exit':
             break
     
