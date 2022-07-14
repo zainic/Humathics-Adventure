@@ -36,17 +36,15 @@ def create_main_menu_frame(background ,layers = []):
                 texture_unselected = np.copy(layer.unselected)
                 position = (4 * frame.shape[0] // 5 - texture_unselected.shape[0] // 2 - 50, button_counter * frame.shape[1] // 3 - texture_unselected.shape[1] // 2)
                 part_button = np.copy(frame[position[0] : position[0] + texture_unselected.shape[0], position[1] : position[1] + texture_unselected.shape[1]])
-                part_button_overlay = cv2.addWeighted(part_button, 1, texture_unselected, 1, 2)
-                frame[position[0] : position[0] + texture_unselected.shape[0], position[1] : position[1] + texture_unselected.shape[1]] = part_button_overlay
+                part_button[np.where((texture_unselected != [0, 0, 0]).all(axis=2))] = [0, 0, 0]
+                frame[position[0] : position[0] + texture_unselected.shape[0], position[1] : position[1] + texture_unselected.shape[1]] = cv2.addWeighted(part_button, 1, texture_unselected, 1, 0)
             else:
                 texture_selected = np.copy(layer.selected)
                 position = (4 * frame.shape[0] // 5 - texture_selected.shape[0] // 2 - 50, button_counter * frame.shape[1] // 3 - texture_selected.shape[1] // 2)
                 part_button = np.copy(frame[position[0] : position[0] + texture_selected.shape[0], position[1] : position[1] + texture_selected.shape[1]])
-                part_button_overlay = cv2.addWeighted(part_button, 1, texture_selected, 1, 2)
-                frame[position[0] : position[0] + texture_selected.shape[0], position[1] : position[1] + texture_selected.shape[1]] = part_button_overlay
+                part_button[np.where((texture_selected != [0, 0, 0]).all(axis=2))] = [0, 0, 0]
+                frame[position[0] : position[0] + texture_selected.shape[0], position[1] : position[1] + texture_selected.shape[1]] = cv2.addWeighted(part_button, 1, texture_selected, 1, 0)
                 
-            
-    
     return frame
 
 def get_enter_status(pressed_keys):
