@@ -11,7 +11,10 @@ from .function import *
 
 def main_menu():
     """
-    Main menu phase
+    Created main menu pages
+
+    Returns:
+        str: status after exiting main menu page
     """
     background = Background(os.path.join("data", "texture", "main_menu", "background.png"))
     play_button = Button(os.path.join("data", "texture", "main_menu", "play_button_selected.png"), os.path.join("data", "texture", "main_menu", "play_button.png"))
@@ -111,7 +114,9 @@ def main_menu():
             if back_button.select:
                 stat = 'main_menu'
             else:
-                stat = 'exit'
+                level = (current_pos[0] - 1) * 5 + current_pos[1]
+                print(level)
+                stat = 'level' + str(level)
             break
         else:
             delay_enter -= 1
