@@ -13,9 +13,14 @@ def main():
     mixer.init()
     mixer.music.load(os.path.join("data","music","main_menu.mp3"))
     mixer.music.play(-1)
+    
     while True:
-        main_menu()
-        break
+        status = main_menu()
+        if status == 'level_selection':
+            pass
+        elif status == 'exit':
+            break
+        
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
