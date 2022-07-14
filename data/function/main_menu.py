@@ -56,7 +56,10 @@ def main_menu():
         
         if get_enter_status(pressed_keys):
             mixer.Sound.play(select_button)
-            break
+            if play_button.select == True:
+                return 'level_selection'
+            elif exit_button.select == True:
+                return 'exit'
     
     time.sleep(1)
     ed = time.time()
