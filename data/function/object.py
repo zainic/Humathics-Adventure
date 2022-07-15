@@ -95,7 +95,7 @@ class Object:
     """
     Create class of object and 
     """
-    def __init__(self, texture_path):
+    def __init__(self, texture_path, coord = np.array([0,0])):
         """
         Initial to load the object
 
@@ -104,7 +104,7 @@ class Object:
         """
         self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
         self.texture_PIL = Image.fromarray(cv2.cvtColor(self.texture, cv2.COLOR_BGRA2RGBA))
-        self.coord = np.array([0,0])
+        self.coord = coord
         
         self.__name__ = "Object"
         
