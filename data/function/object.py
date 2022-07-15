@@ -59,6 +59,30 @@ class Background:
             
         self.background_PIL = Image.fromarray(cv2.cvtColor(self.background, cv2.COLOR_BGRA2RGBA))
 
+class Coordinates:
+    """
+    Create class of coordinates
+    """
+    def __init__(self, tick = 10, origin = np.array([WINDOW_HEIGHT//2, WINDOW_WIDTH//2])):
+        """
+        Create coordinate system with 2 axis (x,y)
+
+        Args:
+            tick (int, optional): tick pixel per one unit. Defaults to 10.
+            origin (array, optional): center of coordinates (0,0) based on image pixel. Defaults to np.array([WINDOW_WIDTH//2, WINDOW_HEIGHT//2]).
+        """
+        y_axis = np.arange((WINDOW_HEIGHT-origin[0])/tick, (-origin[0])/tick, -1/tick)
+        x_axis = np.arange((-origin[1])/tick, (WINDOW_WIDTH - origin[1])/tick, 1/tick)
+        self.coords = np.array([[(i,j) for i in y_axis] for j in x_axis])
+    
+    def coord_to_pixel(self, coord):
+        diff = np.linalg.norm(self.coords - coord, axis=2)
+        ind = np.unravel_index(np.argmin(diff, axis=None), diff.shape)
+        return ind
+        
+    def pixel_to_coord(self, pixel):
+        return self.coords[pixel]
+
 class Layer:
     """
     Create class of layer that will overlay the background
