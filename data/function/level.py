@@ -27,8 +27,19 @@ def level_stage_1():
     layer_1 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_1.png"), solid=True, hurt=False)
     layer_2 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_2.png"), solid=False, hurt=False)
     layer_3 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_3.png"), solid=True, hurt=True)
+    layer_4 = Layer(os.path.join("data", "texture", "levels", "layer_level_default_1.png"))
     
-    layers = [layer_1, layer_2, layer_3]
+    level_star = {}
+    level_star["1"] = Button(os.path.join("data", "texture", "levels", "star_collected.png"), os.path.join("data", "texture", "levels", "star_uncollected.png"))
+    level_star["2"] = Button(os.path.join("data", "texture", "levels", "star_collected.png"), os.path.join("data", "texture", "levels", "star_uncollected.png"))
+    level_star["3"] = Button(os.path.join("data", "texture", "levels", "star_collected.png"), os.path.join("data", "texture", "levels", "star_uncollected.png"))
+    
+    star = {}
+    star["1"] = Object(os.path.join("data", "texture", "levels", "star.png"), )
+    star["2"] = Object(os.path.join("data", "texture", "levels", "star.png"), )
+    star["3"] = Object(os.path.join("data", "texture", "levels", "star.png"), )
+    
+    layers = [layer_1, layer_2, layer_3, layer_4]
     layer_PIL = Image.new("RGBA", (background.background.shape[1], background.background.shape[0]))
     for layer in layers:
         layer_PIL.paste(layer.texture_PIL, (0,0), layer.texture_PIL)
@@ -41,7 +52,7 @@ def level_stage_1():
     
     while True:
         
-        frame = create_level_frame(background, layers = [layer_PIL])
+        frame = create_level_frame(background, layers = [layer_PIL], objects = list(level_star.values()) + list(star.values()))
         
         ed = time.time()
         show_fps(frame, st, ed)

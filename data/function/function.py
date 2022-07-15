@@ -94,7 +94,7 @@ def create_level_selection_frame(background ,layers = []):
                     
     return frame
 
-def create_level_frame(background ,layers = []):
+def create_level_frame(background ,layers = [], objects = []):
     """
     Create frame from some condition in level selection page
 
@@ -105,10 +105,22 @@ def create_level_frame(background ,layers = []):
     
     frame_PIL = background.background_PIL
     button_counter = 0
+    object_counter = 0
     
     # Show layers
     for layer in layers:
         frame_PIL = Image.alpha_composite(frame_PIL, layer)
+    
+    for object in objects:
+        if object.__name__ == "Button":
+            if object.select:
+                frame_PIL.paste(object.selected_PIL, (3*WINDOW_WIDTH//4 + object.unselected.shape[1] * button_counter, 5), object.selected_PIL)
+            else:
+                frame_PIL.paste(object.unselected_PIL, (3*WINDOW_WIDTH//4 + object.unselected.shape[1] * button_counter, 5), object.unselected_PIL)
+            button_counter += 1
+        elif object.__name__ == "Object":
+            frame_PIL.paste(object.texture_PIL, (100 * object_counter, 300), object.texture_PIL)
+            object_counter += 1
     
     frame = cv2.cvtColor(np.array(frame_PIL), cv2.COLOR_RGBA2BGRA)
     
