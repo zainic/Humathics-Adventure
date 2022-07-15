@@ -76,11 +76,29 @@ class Coordinates:
         self.coords = np.array([[(i,j) for i in y_axis] for j in x_axis])
     
     def coord_to_pixel(self, coord):
+        """
+        Convert coordinate value into index/pixel value
+
+        Args:
+            coord (array): Coordinate value
+
+        Returns:
+            tuple: index of nearest value of the coord
+        """
         diff = np.linalg.norm(self.coords - coord, axis=2)
         ind = np.unravel_index(np.argmin(diff, axis=None), diff.shape)
         return ind
         
     def pixel_to_coord(self, pixel):
+        """
+        Convert index value into coordinate value corresponding to that index pixel
+
+        Args:
+            pixel (tuple): index of the pixel
+
+        Returns:
+            array: Coordinate value
+        """
         return self.coords[pixel]
 
 class Layer:
