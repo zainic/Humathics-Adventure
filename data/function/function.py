@@ -3,6 +3,7 @@ import cv2
 import os, sys
 import time
 
+from PIL import Image
 from pynput import keyboard
 
 from .object import *
@@ -102,19 +103,16 @@ def create_level_frame(background ,layers = []):
         layers (list, optional): layers that overlay the background. Defaults to [].
     """
     
-    frame = np.copy(background.background)
+    frame = cv2.cvtColor(np.copy(background.background), cv2.COLOR_BGRA2RGBA)
+    frame_PIL = Image.fromarray(frame)
     button_counter = 0
-    layer_counter = 0
     
     # Show layers
     for layer in layers:
-        if layer.__name__ == "LevelLayer":
-            layer_counter += 1
-            gray = cv2.cvtColor(np.copy(layer.texture), cv2.COLOR_BGR2GRAY)
-            triple_gray = cv2.merge([gray, gray, gray],3)
-            frame = cv2.addWeighted(frame, 1, triple_gray, -255, 0)
-            frame = cv2.addWeighted(frame, 1, layer.texture, 1, 0)
-                    
+        frame_PIL = Image.alpha_composite(frame_PIL, layer)
+    
+    frame = cv2.cvtColor(np.array(frame_PIL), cv2.COLOR_RGBA2BGRA)
+    
     return frame
 
 def show_fps(frame, st, ed):

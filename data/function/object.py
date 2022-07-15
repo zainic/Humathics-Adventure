@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import os, sys
 
+from PIL import Image
+
 DEFAULT_WINDOW_WIDTH = 1280
 DEFAULT_WINDOW_HEIGHT = 720
 
@@ -22,7 +24,7 @@ class Background:
         Args:
             texture_path (str): path of the background image texture
         """
-        self.full_background = cv2.imread(texture_path)
+        self.full_background = cv2.imread(texture_path, cv2.IMREAD_UNCHANGED)
         self.background = self.full_background[:DEFAULT_WINDOW_HEIGHT, :DEFAULT_WINDOW_WIDTH]
         self.x = 0
         self.y = 0
@@ -63,7 +65,7 @@ class Layer:
             texture_path (str): path of the layer image texture with black background
             solid (bool, optional): . Defaults to False.
         """
-        self.texture = cv2.imread(texture_path)
+        self.texture = cv2.imread(texture_path, cv2.IMREAD_UNCHANGED)
         
         self.__name__ = "Layer"
 
@@ -93,7 +95,7 @@ class Object:
         Args:
             layer_path (str): path of the layer image with black background
         """
-        self.texture = cv2.imread(texture_path)
+        self.texture = cv2.imread(texture_path, cv2.IMREAD_UNCHANGED)
         
         self.__name__ = "Object"
         
@@ -109,8 +111,8 @@ class Button:
             texture_unselected_path (str): path of the unselected button texture with black background
             texture_selected_path (str): path of the selected button texture with black background
         """
-        self.unselected = cv2.imread(texture_unselected_path)
-        self.selected = cv2.imread(texture_selected_path)
+        self.unselected = cv2.imread(texture_unselected_path, cv2.IMREAD_UNCHANGED)
+        self.selected = cv2.imread(texture_selected_path, cv2.IMREAD_UNCHANGED)
         
         self.select = False
         
