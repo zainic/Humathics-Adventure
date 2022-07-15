@@ -129,7 +129,7 @@ def show_fps(frame, st, ed):
         fps = 30
     else:
         fps = round(1/(ed - st))
-    cv2.putText(frame, "fps : " + str(fps), (10, DEFAULT_WINDOW_HEIGHT - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
+    cv2.putText(frame, "fps : " + str(fps), (10, WINDOW_HEIGHT - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255,255,255), 1, cv2.LINE_AA)
 
 def get_direction_from_keys(keys):
     """

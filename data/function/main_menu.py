@@ -42,7 +42,7 @@ def main_menu():
         show_fps(frame, st, ed)
         st = time.time()
         
-        cv2.imshow("Humathics Adventure", frame)
+        cv2.imshow("Humathics Adventure", cv2.resize(frame, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST))
         
         key = cv2.waitKey(1) & 0xff
         
@@ -81,7 +81,7 @@ def main_menu():
         show_fps(frame, st, ed)
         st = time.time()
         
-        cv2.imshow("Humathics Adventure", frame)
+        cv2.imshow("Humathics Adventure", cv2.resize(frame, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST))
         
         key = cv2.waitKey(1) & 0xff
         
