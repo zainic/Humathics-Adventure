@@ -119,7 +119,7 @@ def create_level_frame(background ,layers = [], objects = []):
                 frame_PIL.paste(object.unselected_PIL, (3*WINDOW_WIDTH//4 + object.unselected.shape[1] * button_counter, 5), object.unselected_PIL)
             button_counter += 1
         elif object.__name__ == "Object":
-            frame_PIL.paste(object.texture_PIL, (100 * object_counter, 300), object.texture_PIL)
+            frame_PIL.paste(object.texture_PIL, (object.coord[0] - object.texture.shape[1]//2, object.coord[1] - object.texture.shape[0]//2), object.texture_PIL)
             object_counter += 1
     
     frame = cv2.cvtColor(np.array(frame_PIL), cv2.COLOR_RGBA2BGRA)
