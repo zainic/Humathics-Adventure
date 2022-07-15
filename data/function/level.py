@@ -31,9 +31,7 @@ def level_stage_1():
     layers = [layer_1, layer_2, layer_3]
     layer_PIL = Image.new("RGBA", (background.background.shape[1], background.background.shape[0]))
     for layer in layers:
-        texture = cv2.cvtColor(np.copy(layer.texture), cv2.COLOR_BGRA2RGBA)
-        texture_PIL = Image.fromarray(texture)
-        layer_PIL.paste(texture_PIL, (0,0), texture_PIL)
+        layer_PIL.paste(layer.texture_PIL, (0,0), layer.texture_PIL)
     
     switch_button = mixer.Sound(os.path.join("data","sound","switch_button.wav"))
     select_button = mixer.Sound(os.path.join("data","sound","select_button.wav"))

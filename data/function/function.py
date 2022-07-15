@@ -103,8 +103,7 @@ def create_level_frame(background ,layers = []):
         layers (list, optional): layers that overlay the background. Defaults to [].
     """
     
-    frame = cv2.cvtColor(np.copy(background.background), cv2.COLOR_BGRA2RGBA)
-    frame_PIL = Image.fromarray(frame)
+    frame_PIL = background.background_PIL
     button_counter = 0
     
     # Show layers

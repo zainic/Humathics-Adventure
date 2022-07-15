@@ -29,6 +29,7 @@ class Background:
         """
         self.full_background = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
         self.background = self.full_background[:WINDOW_HEIGHT, :WINDOW_WIDTH]
+        self.background_PIL = Image.fromarray(cv2.cvtColor(self.background, cv2.COLOR_BGRA2RGBA))
         self.x = 0
         self.y = 0
         
@@ -55,6 +56,8 @@ class Background:
             self.background = np.hstack([self.full_background[:, self.x:], self.full_background[:, :WINDOW_WIDTH - (self.full_background.shape[1] - self.x)]])
         else:
             self.background = self.full_background[:, self.x : self.x + WINDOW_WIDTH]
+            
+        self.background_PIL = Image.fromarray(cv2.cvtColor(self.background, cv2.COLOR_BGRA2RGBA))
 
 class Layer:
     """
@@ -69,6 +72,7 @@ class Layer:
             solid (bool, optional): . Defaults to False.
         """
         self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        self.texture_PIL = Image.fromarray(cv2.cvtColor(self.texture, cv2.COLOR_BGRA2RGBA))
         
         self.__name__ = "Layer"
 
@@ -99,6 +103,8 @@ class Object:
             layer_path (str): path of the layer image with black background
         """
         self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        self.texture_PIL = Image.fromarray(cv2.cvtColor(self.texture, cv2.COLOR_BGRA2RGBA))
+        self.coord = np.array([0,0])
         
         self.__name__ = "Object"
         
@@ -116,6 +122,9 @@ class Button:
         """
         self.unselected = cv2.resize(cv2.imread(texture_unselected_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
         self.selected = cv2.resize(cv2.imread(texture_selected_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        
+        self.unselected_PIL = Image.fromarray(cv2.cvtColor(self.unselected, cv2.COLOR_BGRA2RGBA))
+        self.selected_PIL = Image.fromarray(cv2.cvtColor(self.selected, cv2.COLOR_BGRA2RGBA))
         
         self.select = False
         
