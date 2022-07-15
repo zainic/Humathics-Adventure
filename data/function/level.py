@@ -21,7 +21,7 @@ def level_stage_1():
     level_stage_background_list = ["background_type_1.png"]
     
     background = Background(os.path.join("data", "texture", "levels", level_stage_background_list[np.random.randint(0,1)]))
-    coordinates = Coordinates(tick = 100, origin = np.array([WINDOW_HEIGHT//2, WINDOW_WIDTH//2]))
+    coordinates = Coordinates(tick = 70, origin = np.array([WINDOW_HEIGHT//2 - 20, WINDOW_WIDTH//2]))
     layer_1 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_1.png"), solid=True, hurt=False)
     layer_2 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_2.png"), solid=False, hurt=False)
     layer_3 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_3.png"), solid=True, hurt=True)
@@ -33,9 +33,9 @@ def level_stage_1():
     level_star["3"] = Button(os.path.join("data", "texture", "levels", "star_collected.png"), os.path.join("data", "texture", "levels", "star_uncollected.png"))
     
     star = {}
-    star["1"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([1,0])))
-    star["2"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([0,-1])))
-    star["3"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([0,1])))
+    star["1"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([2,0])))
+    star["2"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([1,-1])))
+    star["3"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([1,1])))
     
     layers = [layer_1, layer_2, layer_3, layer_4]
     layer_PIL = Image.new("RGBA", (background.background.shape[1], background.background.shape[0]))
