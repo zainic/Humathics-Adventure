@@ -77,27 +77,27 @@ class Coordinates:
     
     def coord_to_pixel(self, coord):
         """
-        Convert coordinate value into index/pixel value
+        Convert coordinate value into index/pixel value 
 
         Args:
-            coord (array): Coordinate value
+            coord (array): Coordinate value [y,x]
 
         Returns:
-            tuple: index of nearest value of the coord
+            tuple: index of nearest value of the coord [j,i]
         """
         diff = np.linalg.norm(self.coords - coord, axis=2)
         ind = np.unravel_index(np.argmin(diff, axis=None), diff.shape)
-        return ind
+        return np.array(ind)
         
     def pixel_to_coord(self, pixel):
         """
         Convert index value into coordinate value corresponding to that index pixel
 
         Args:
-            pixel (tuple): index of the pixel
+            pixel (tuple): index of the pixel [j,i]
 
         Returns:
-            array: Coordinate value
+            array: Coordinate value [y,x]
         """
         return self.coords[pixel]
 
