@@ -21,7 +21,7 @@ def level_stage_1():
     level_stage_background_list = ["background_type_1.png"]
     
     background = Background(os.path.join("data", "texture", "levels", level_stage_background_list[np.random.randint(0,1)]))
-    coordinates = Coordinates(tick = 70, origin = np.array([WINDOW_HEIGHT//2 - 20, WINDOW_WIDTH//2]))
+    coordinates = Coordinates(tick = 70*WINDOW_HEIGHT//360, origin = np.array([WINDOW_HEIGHT//2 - 20*WINDOW_HEIGHT//360, WINDOW_WIDTH//2]))
     layer_1 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_1.png"), solid=True, hurt=False)
     layer_2 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_2.png"), solid=False, hurt=False)
     layer_3 = LevelLayer(os.path.join("data", "texture", "levels", "layer_level_1_3.png"), solid=True, hurt=True)
@@ -59,12 +59,12 @@ def level_stage_1():
         show_fps(frame, st, ed)
         st = time.time()
         
-        cv2.imshow("Humathics Adventure", cv2.resize(frame, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST))
+        cv2.imshow("Humathics Adventure", cv2.resize(frame, None, fx=DEFAULT_WINDOW_WIDTH/WINDOW_WIDTH, fy=DEFAULT_WINDOW_HEIGHT/WINDOW_HEIGHT, interpolation=cv2.INTER_NEAREST))
         
         key = cv2.waitKey(1) & 0xff
         
         background.move_background(LEFT, 2)
-        
+        print(pressed_keys)
         if get_exit_status(pressed_keys) and delay_enter <= 0:
             mixer.Sound.play(select_button)
             ed = time.time()

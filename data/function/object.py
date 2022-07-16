@@ -7,8 +7,11 @@ from PIL import Image
 DEFAULT_WINDOW_WIDTH = 1280
 DEFAULT_WINDOW_HEIGHT = 720
 
-WINDOW_WIDTH = 640
-WINDOW_HEIGHT = 360
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
+
+SCALE_WIDTH = WINDOW_WIDTH / DEFAULT_WINDOW_WIDTH
+SCALE_HEIGHT = WINDOW_HEIGHT / DEFAULT_WINDOW_HEIGHT
 
 UP = np.array([-1, 0])
 DOWN = np.array([1, 0])
@@ -27,7 +30,7 @@ class Background:
         Args:
             texture_path (str): path of the background image texture
         """
-        self.full_background = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        self.full_background = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=SCALE_WIDTH, fy=SCALE_HEIGHT, interpolation=cv2.INTER_AREA)
         self.background = self.full_background[:WINDOW_HEIGHT, :WINDOW_WIDTH]
         self.background_PIL = Image.fromarray(cv2.cvtColor(self.background, cv2.COLOR_BGRA2RGBA))
         self.x = 0
@@ -113,7 +116,7 @@ class Layer:
             texture_path (str): path of the layer image texture with black background
             solid (bool, optional): . Defaults to False.
         """
-        self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=SCALE_WIDTH, fy=SCALE_HEIGHT, interpolation=cv2.INTER_AREA)
         self.texture_PIL = Image.fromarray(cv2.cvtColor(self.texture, cv2.COLOR_BGRA2RGBA))
         
         self.__name__ = "Layer"
@@ -144,7 +147,7 @@ class Object:
         Args:
             layer_path (str): path of the layer image with black background
         """
-        self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        self.texture = cv2.resize(cv2.imread(texture_path, cv2.IMREAD_UNCHANGED), None, fx=SCALE_WIDTH, fy=SCALE_HEIGHT, interpolation=cv2.INTER_AREA)
         self.texture_PIL = Image.fromarray(cv2.cvtColor(self.texture, cv2.COLOR_BGRA2RGBA))
         self.coord = coord
         
@@ -162,8 +165,8 @@ class Button:
             texture_unselected_path (str): path of the unselected button texture with black background
             texture_selected_path (str): path of the selected button texture with black background
         """
-        self.unselected = cv2.resize(cv2.imread(texture_unselected_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
-        self.selected = cv2.resize(cv2.imread(texture_selected_path, cv2.IMREAD_UNCHANGED), None, fx=1/2, fy=1/2, interpolation=cv2.INTER_AREA)
+        self.unselected = cv2.resize(cv2.imread(texture_unselected_path, cv2.IMREAD_UNCHANGED), None, fx=SCALE_WIDTH, fy=SCALE_HEIGHT, interpolation=cv2.INTER_AREA)
+        self.selected = cv2.resize(cv2.imread(texture_selected_path, cv2.IMREAD_UNCHANGED), None, fx=SCALE_WIDTH, fy=SCALE_HEIGHT, interpolation=cv2.INTER_AREA)
         
         self.unselected_PIL = Image.fromarray(cv2.cvtColor(self.unselected, cv2.COLOR_BGRA2RGBA))
         self.selected_PIL = Image.fromarray(cv2.cvtColor(self.selected, cv2.COLOR_BGRA2RGBA))
@@ -195,7 +198,8 @@ class TextBox:
     """
     Create class of textbox
     """
-    def __init__(self, initial_text = "", font_color = (255,255,255), background_color = (0,0,0), fixed = False, shapebox = (0,0,50,50), font_style = cv2.FONT_HERSHEY_SIMPLEX, line = cv2.LINE_AA):
+    def __init__(self, initial_text = "", font_color = (255,255,255), background_color = (0,0,0), fixed = False, shapebox = (0,0,50,50),
+                 font_style = cv2.FONT_HERSHEY_SIMPLEX, line = cv2.LINE_AA, font_scale = WINDOW_WIDTH/640):
         """
         Initial value of text box
 
@@ -207,6 +211,7 @@ class TextBox:
             shapebox (tuple, optional): Boundary of the text (up, left, bottom, right). Defaults to (0,0,50,50).
             font_style (int, optional): Font style. Defaults to cv2.FONT_HERSHEY_SIMPLEX.
             line (int, optional): Line style. Defaults to cv2.LINE_AA.
+            font_scale (float, optional): Scale of font. Defaults to WINDOW_WIDTH/640.
         """
         self.text = initial_text
         self.color = font_color
@@ -215,13 +220,14 @@ class TextBox:
         self.fixed = fixed
         self.shapebox = shapebox
         self.line = line
+        self.scale = font_scale
         
         self.box = np.zeros((self.shapebox[2]-self.shapebox[0], self.shapebox[3]-self.shapebox[1], 3), dtype=np.uint8) + np.array(list(self.fill), dtype=np.uint8)
-        text_width, text_height = cv2.getTextSize(self.text, self.font, 1, self.line)[0]
+        text_width, text_height = cv2.getTextSize(self.text, self.font, self.scale, self.line)[0]
         if self.fixed and text_width >= self.shapebox[3] - self.shapebox[1]:
-            self.box = cv2.putText(self.box, self.text, ((self.shapebox[3] - self.shapebox[1])-text_width, 3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+            self.box = cv2.putText(self.box, self.text, ((self.shapebox[3] - self.shapebox[1])-text_width, (round(self.scale)*4 - 1 )*text_height//(round(self.scale)*4)), self.font, self.scale, self.color, 1, cv2.LINE_AA)
         else:
-            self.box = cv2.putText(self.box, self.text, (0,3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+            self.box = cv2.putText(self.box, self.text, (0, (round(self.scale)*4 - 1 )*text_height//(round(self.scale)*4)), self.font, self.scale, self.color, 1, cv2.LINE_AA)
             
         self.__name__ = "TextBox"
         
@@ -245,9 +251,9 @@ class TextBox:
         Update the text box
         """
         self.box = np.zeros((self.shapebox[2]-self.shapebox[0], self.shapebox[3]-self.shapebox[1], 3), dtype=np.uint8) + np.array(list(self.fill), dtype=np.uint8)
-        text_width, text_height = cv2.getTextSize(self.text, self.font, 1, self.line)[0]
+        text_width, text_height = cv2.getTextSize(self.text, self.font, self.scale, self.line)[0]
         if self.fixed and text_width >= self.shapebox[3] - self.shapebox[1]:
-            self.box = cv2.putText(self.box, self.text, ((self.shapebox[3] - self.shapebox[1])-text_width, 3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+            self.box = cv2.putText(self.box, self.text, ((self.shapebox[3] - self.shapebox[1])-text_width, (round(self.scale)*4 - 1 )*text_height//(round(self.scale)*4)), self.font, self.scale, self.color, 1, cv2.LINE_AA)
         else:
-            self.box = cv2.putText(self.box, self.text, (0, 3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+            self.box = cv2.putText(self.box, self.text, (0, (round(self.scale)*4 - 1 )*text_height//(round(self.scale)*4)), self.font, self.scale, self.color, 1, cv2.LINE_AA)
   
