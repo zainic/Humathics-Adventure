@@ -48,7 +48,7 @@ def level_stage_1():
     switch_button = mixer.Sound(os.path.join("data","sound","switch_button.wav"))
     select_button = mixer.Sound(os.path.join("data","sound","select_button.wav"))
     delay_enter = 5
-    delay_type = 5
+    delay_type = 2
     
     st = time.time()
     
@@ -69,10 +69,10 @@ def level_stage_1():
         
         if char != None and delay_type <= 0:
             equation.add_letter(char)
-            delay_type = 5
+            delay_type = 2
         elif get_backspace(pressed_keys) and delay_type <= 0:
             equation.backspace()
-            delay_type = 5
+            delay_type = 2
         else:
             delay_type -= 1
         equation.update_box()
