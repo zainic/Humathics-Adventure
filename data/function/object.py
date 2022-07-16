@@ -190,4 +190,64 @@ class Button:
             set (boolean): Set the button status
         """
         self.select = set
+
+class TextBox:
+    """
+    Create class of textbox
+    """
+    def __init__(self, initial_text = "", font_color = (255,255,255), background_color = (0,0,0), fixed = False, shapebox = (0,0,50,50), font_style = cv2.FONT_HERSHEY_SIMPLEX, line = cv2.LINE_AA):
+        """
+        Initial value of text box
+
+        Args:
+            initial_text (str, optional): Shown text. Defaults to "".
+            font_color (tuple, optional): Font color. Defaults to (255,255,255) white in BGR.
+            background_color (tuple, optional): Background color or behind text color. Defaults to (0,0,0) black in BGR.
+            fixed (bool, optional): Fixed box position and stay. Defaults to False.
+            shapebox (tuple, optional): Boundary of the text (up, left, bottom, right). Defaults to (0,0,50,50).
+            font_style (int, optional): Font style. Defaults to cv2.FONT_HERSHEY_SIMPLEX.
+            line (int, optional): Line style. Defaults to cv2.LINE_AA.
+        """
+        self.text = initial_text
+        self.color = font_color
+        self.fill = background_color
+        self.font = font_style
+        self.fixed = fixed
+        self.shapebox = shapebox
+        self.line = line
         
+        self.box = np.zeros((self.shapebox[2]-self.shapebox[0], self.shapebox[3]-self.shapebox[1], 3), dtype=np.uint8) + np.array(list(self.fill), dtype=np.uint8)
+        text_width, text_height = cv2.getTextSize(self.text, self.font, 1, self.line)[0]
+        if self.fixed and text_width >= self.shapebox[3] - self.shapebox[1]:
+            self.box = cv2.putText(self.box, self.text, ((self.shapebox[3] - self.shapebox[1])-text_width, 3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+        else:
+            self.box = cv2.putText(self.box, self.text, (0,3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+            
+        self.__name__ = "TextBox"
+        
+    def add_letter(self, letter):
+        """
+        Update the text
+
+        Args:
+            letter (str): letter that'll be added into text box 
+        """
+        self.text += letter
+        
+    def backspace(self):
+        """
+        Remove one character from front
+        """
+        self.text = self.text[:-1]
+        
+    def update_box(self):
+        """
+        Update the text box
+        """
+        self.box = np.zeros((self.shapebox[2]-self.shapebox[0], self.shapebox[3]-self.shapebox[1], 3), dtype=np.uint8) + np.array(list(self.fill), dtype=np.uint8)
+        text_width, text_height = cv2.getTextSize(self.text, self.font, 1, self.line)[0]
+        if self.fixed and text_width >= self.shapebox[3] - self.shapebox[1]:
+            self.box = cv2.putText(self.box, self.text, ((self.shapebox[3] - self.shapebox[1])-text_width, 3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+        else:
+            self.box = cv2.putText(self.box, self.text, (0, 3*text_height//4), self.font, 1, self.color, 1, cv2.LINE_AA)
+  
