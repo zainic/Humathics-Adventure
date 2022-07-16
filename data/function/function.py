@@ -198,3 +198,37 @@ def get_exit_status(pressed_keys):
         return True
     
     return False
+
+def get_char(pressed_keys):
+    """
+    funtion with char as return value
+
+    Args:
+        pressed_keys (set): key that got pressed
+
+    Returns:
+        str: character
+    """
+    for char in list(pressed_keys):
+        try:
+            if type(char.char) == type(""):
+                return char.char
+        except:
+            pass
+    
+    return None
+
+def get_backspace(pressed_keys):
+    """
+    function that return backspace pressed status from key pressed
+
+    Args:
+        pressed_keys (set): key that got pressed
+
+    Returns:
+        bool: backspace pressed status
+    """
+    if keyboard.Key.backspace in pressed_keys:
+        return True
+    
+    return False

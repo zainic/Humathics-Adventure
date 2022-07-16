@@ -48,6 +48,7 @@ def level_stage_1():
     switch_button = mixer.Sound(os.path.join("data","sound","switch_button.wav"))
     select_button = mixer.Sound(os.path.join("data","sound","select_button.wav"))
     delay_enter = 5
+    delay_type = 5
     
     st = time.time()
     
@@ -64,7 +65,18 @@ def level_stage_1():
         key = cv2.waitKey(1) & 0xff
         
         background.move_background(LEFT, 2)
-        print(pressed_keys)
+        char = get_char(pressed_keys)
+        
+        if char != None and delay_type <= 0:
+            equation.add_letter(char)
+            delay_type = 5
+        elif get_backspace(pressed_keys) and delay_type <= 0:
+            equation.backspace()
+            delay_type = 5
+        else:
+            delay_type -= 1
+        equation.update_box()
+        
         if get_exit_status(pressed_keys) and delay_enter <= 0:
             mixer.Sound.play(select_button)
             ed = time.time()
