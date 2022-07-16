@@ -121,6 +121,9 @@ def create_level_frame(background ,layers = [], objects = []):
         elif object.__name__ == "Object":
             frame_PIL.paste(object.texture_PIL, (object.coord[0] - object.texture.shape[1]//2, object.coord[1] - object.texture.shape[0]//2), object.texture_PIL)
             object_counter += 1
+        elif object.__name__ == "TextBox":
+            TextBox_PIL = Image.fromarray(cv2.cvtColor(object.box, cv2.COLOR_BGR2RGBA))
+            frame_PIL.paste(TextBox_PIL, (object.shapebox[1], object.shapebox[0]), TextBox_PIL)
     
     frame = cv2.cvtColor(np.array(frame_PIL), cv2.COLOR_RGBA2BGRA)
     

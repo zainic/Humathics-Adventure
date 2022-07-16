@@ -37,6 +37,9 @@ def level_stage_1():
     star["2"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([1,-1])))
     star["3"] = Object(os.path.join("data", "texture", "levels", "star.png"), coordinates.coord_to_pixel(np.array([1,1])))
     
+    shapebox = (11*WINDOW_HEIGHT//360, 22*WINDOW_WIDTH//640, 32*WINDOW_HEIGHT//360, 195*WINDOW_WIDTH//640)
+    equation = TextBox("Equation", fixed=True, background_color=(10,77,148), shapebox=shapebox, font_style=cv2.FONT_HERSHEY_COMPLEX_SMALL)
+    
     layers = [layer_1, layer_2, layer_3, layer_4]
     layer_PIL = Image.new("RGBA", (background.background.shape[1], background.background.shape[0]))
     for layer in layers:
@@ -50,7 +53,7 @@ def level_stage_1():
     
     while True:
         
-        frame = create_level_frame(background, layers = [layer_PIL], objects = list(level_star.values()) + list(star.values()))
+        frame = create_level_frame(background, layers = [layer_PIL], objects = list(level_star.values()) + list(star.values()) + list([equation]))
         
         ed = time.time()
         show_fps(frame, st, ed)
