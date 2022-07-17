@@ -7,8 +7,8 @@ from PIL import Image
 DEFAULT_WINDOW_WIDTH = 1280
 DEFAULT_WINDOW_HEIGHT = 720
 
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 360
 
 SCALE_WIDTH = WINDOW_WIDTH / DEFAULT_WINDOW_WIDTH
 SCALE_HEIGHT = WINDOW_HEIGHT / DEFAULT_WINDOW_HEIGHT
@@ -86,18 +86,20 @@ class Coordinates:
             coord (array): Coordinate value [y,x]
 
         Returns:
-            tuple: index of nearest value of the coord [j,i]
+            tuple: index of nearest value of the coord [i,j] if the coord value isn't in range, it returns [-1,-1]
         """
         diff = np.linalg.norm(self.coords - coord, axis=2)
         ind = np.unravel_index(np.argmin(diff, axis=None), diff.shape)
-        return np.array(ind)
+        if diff[ind] <= 1e-10:
+            return np.array(ind)
+        return np.array([-1,-1])
         
     def pixel_to_coord(self, pixel):
         """
         Convert index value into coordinate value corresponding to that index pixel
 
         Args:
-            pixel (tuple): index of the pixel [j,i]
+            pixel (tuple): index of the pixel [i,j]
 
         Returns:
             array: Coordinate value [y,x]
