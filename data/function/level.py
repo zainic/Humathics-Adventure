@@ -40,6 +40,14 @@ def level_stage_1():
     shapebox = (11*WINDOW_HEIGHT//360, 22*WINDOW_WIDTH//640, 32*WINDOW_HEIGHT//360, 195*WINDOW_WIDTH//640)
     equation = TextBox("Equation", fixed=True, background_color=(10,77,148), shapebox=shapebox, font_style=cv2.FONT_HERSHEY_COMPLEX_SMALL)
     
+    node = {}
+    node["origin"] = Object(os.path.join("data", "texture", "levels", "origin.png"), coordinates.coord_to_pixel(np.array([0,0])))
+    for i in np.arange(-10,11,1):
+        if coordinates.coord_to_pixel(np.array([0,i]))[0] != -1 and i != 0:
+            node[(0,i)] = Object(os.path.join("data", "texture", "levels", "node.png"), coordinates.coord_to_pixel(np.array([0,i])))
+        if coordinates.coord_to_pixel(np.array([i,0]))[1] != -1 and i != 0:
+            node[(i,0)] = Object(os.path.join("data", "texture", "levels", "node.png"), coordinates.coord_to_pixel(np.array([i,0])))
+    
     layers = [layer_1, layer_2, layer_3, layer_4]
     layer_PIL = Image.new("RGBA", (background.background.shape[1], background.background.shape[0]))
     for layer in layers:
@@ -48,13 +56,13 @@ def level_stage_1():
     switch_button = mixer.Sound(os.path.join("data","sound","switch_button.wav"))
     select_button = mixer.Sound(os.path.join("data","sound","select_button.wav"))
     delay_enter = 5
-    delay_type = 2
+    delay_type = 3
     
     st = time.time()
     
     while True:
         
-        frame = create_level_frame(background, layers = [layer_PIL], objects = list(level_star.values()) + list(star.values()) + list([equation]))
+        frame = create_level_frame(background, layers = [layer_PIL], objects = list(level_star.values()) + list(star.values()) + list([equation]) + list(node.values()))
         
         ed = time.time()
         show_fps(frame, st, ed)
@@ -69,10 +77,10 @@ def level_stage_1():
         
         if char != None and delay_type <= 0:
             equation.add_letter(char)
-            delay_type = 2
+            delay_type = 3
         elif get_backspace(pressed_keys) and delay_type <= 0:
             equation.backspace()
-            delay_type = 2
+            delay_type = 3
         else:
             delay_type -= 1
         equation.update_box()

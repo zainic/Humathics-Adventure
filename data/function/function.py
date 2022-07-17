@@ -119,8 +119,12 @@ def create_level_frame(background ,layers = [], objects = []):
                 frame_PIL.paste(object.unselected_PIL, (3*WINDOW_WIDTH//4 + object.unselected.shape[1] * button_counter, 5), object.unselected_PIL)
             button_counter += 1
         elif object.__name__ == "Object":
-            frame_PIL.paste(object.texture_PIL, (object.coord[0] - object.texture.shape[1]//2, object.coord[1] - object.texture.shape[0]//2), object.texture_PIL)
-            object_counter += 1
+            try:
+                frame_PIL.paste(object.texture_PIL, (object.coord[0] - object.texture.shape[1]//2, object.coord[1] - object.texture.shape[0]//2), object.texture_PIL)
+                object_counter += 1
+            except Exception as e:
+                print(e)
+                pass
         elif object.__name__ == "TextBox":
             TextBox_PIL = Image.fromarray(cv2.cvtColor(object.box, cv2.COLOR_BGR2RGBA))
             frame_PIL.paste(TextBox_PIL, (object.shapebox[1], object.shapebox[0]), TextBox_PIL)
@@ -215,6 +219,8 @@ def get_char(pressed_keys):
                 return char.char
         except:
             pass
+    if keyboard.Key.space in pressed_keys:
+        return " "
     
     return None
 
